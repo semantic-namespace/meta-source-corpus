@@ -1,8 +1,8 @@
 ;; Precision and recall of meta-source's checks over pinned real apps, with
-;; the core (..) and every pack (../packs) on the classpath.
+;; meta-source and every pack (meta-source-packs), at a commit, on the classpath.
 {:paths ["src"]
- :deps {io.github.semantic-namespace/meta-source {:local/root ".."}
-        io.github.semantic-namespace/meta-source-packs {:local/root "../packs"}}
+ :deps {io.github.semantic-namespace/meta-source {:git/url "https://github.com/semantic-namespace/meta-source" :git/sha "90023bf638cf094fcff8a69719f61830ae3898a4"}
+        io.github.semantic-namespace/meta-source-packs {:git/url "https://github.com/semantic-namespace/meta-source-packs" :git/sha "657afa43f185c1b7b355352f5fb71229a4298ca3"}}
  :tasks {corpus {:doc "fetch | run [app ...] | report | unlabeled [n] | plant | ci (README.md)"
                  :requires ([meta-source.corpus])
                  :task (apply meta-source.corpus/-main *command-line-args*)}}}

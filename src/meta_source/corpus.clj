@@ -1,8 +1,8 @@
 (ns meta-source.corpus
   "The precision corpus: meta-source's checks run over pinned real apps, each
    finding judged by a person, and per check how many of its findings are
-   real. See README.md. Run from this directory, whose bb.edn puts the core
-   (..) and every pack (../packs) on the classpath.
+   real. See README.md. Its bb.edn puts meta-source and every pack
+   (meta-source-packs), each at a commit, on the classpath.
 
      bb corpus fetch            clone each app at its commit, under .corpus/apps
      bb corpus run [app ...]    check each app, into .corpus/findings.edn

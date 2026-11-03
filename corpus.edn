@@ -120,9 +120,11 @@
   {:id :logseq :git "https://github.com/logseq/logseq" :sha "05c3ae73e08498e9e20f1b11c3eac5525e5e588d"
    :config {:src ["src/main" "deps/db/src"] :packs {:datascript {} :reitit {} :spec {} :malli {}}}}
 
-  ;; ---- this repository's fixture: where defects are planted to measure recall
-  ;; its findings are the fixture's own planted problems: never in precision
-  {:id :shop-fixture :path "../packs/test/fixtures/shop" :plants-only true}]
+  ;; ---- meta-source-packs' shop fixture: where defects are planted to measure
+  ;; recall; its findings are the fixture's own planted problems: never in
+  ;; precision. At the commit deps.edn pins.
+  {:id :shop-fixture :git "https://github.com/semantic-namespace/meta-source-packs" :sha "657afa43f185c1b7b355352f5fb71229a4298ca3"
+   :root "test/fixtures/shop" :plants-only true}]
 
  ;; problems that say what wasn't read, not that something is wrong: counted,
  ;; never in precision
