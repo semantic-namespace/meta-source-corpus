@@ -211,6 +211,24 @@ It also exposed two bugs in the pack, both fixed:
 Still false: logseq's 6 `conflicting-values` errors, from two routers that
 name their routes alike.
 
+## Fifth run: where a route is written (2026-11-17)
+
+logseq's two routers agree on what each route is (both `:home`s are `/`,
+both `:page`s `/page/:name`, both `:import`s `/import`), and differ only in
+where it's written: `:reitit/in` and `:reitit/ns`. The reitit pack now names
+those keys `:each` (meta-source-packs#5, on meta-source#63's `:pack/merge`
+policy), so one name declared in two routers is one route written in two
+places. Paths, handlers and views still conflict when they disagree.
+
+| check | fourth run | fifth run |
+|---|---|---|
+| `conflicting-values` (error) | 0/6 | no findings |
+
+Pinned to meta-source and meta-source-packs at their current main, the
+corpus gives the same findings as at the old pins except these 6. Their
+labels stay, judging findings no run produces now, as the wrapper labels
+do: the record of what was false and why.
+
 ## A corpus in another project
 
 A project can keep its own corpus, for code that can't be public, next to
