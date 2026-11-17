@@ -234,7 +234,7 @@ do: the record of what was false and why.
 `report` gives, per app, the library forms the packs read out of those they
 found (meta-source#64's coverage line). A form not read is a finding that
 can't be made, so precision is over what was read. At this pin every app
-reads 98% or more: status-mobile 13308 of 13541, vetd-app 1807 of 1828,
+reads 96% or more: the lowest is tubo, 55 of 57; status-mobile reads 13308 of 13541, vetd-app 1807 of 1828,
 repath-studio 3826 of 3852.
 
 The coverage line's other numbers don't apply here. None of these apps
