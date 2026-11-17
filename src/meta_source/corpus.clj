@@ -129,12 +129,17 @@
   (let [cfg (config app)
         t0 (System/currentTimeMillis)
         idx (index/build cfg)
-        ps (index/check idx)]
+        ps (index/check idx)
+        {:keys [packs]} (index/summary idx)]
     {:app (:id app)
      :ms (- (System/currentTimeMillis) t0)
      ;; an app that reads nothing has no findings: that is no evidence
      :entities (count (:entities idx))
      :lines (source-lines cfg)
+     ;; how far the findings reach: the library forms the packs read, of
+     ;; all they met (a form not read is a finding that can't be made)
+     :forms-read (reduce + (map :read (vals packs)))
+     :forms (reduce + (map #(+ (:read %) (:not-read %)) (vals packs)))
      :findings (vec (for [p ps]
                       {:key (finding-key (:id app) p)
                        :severity (:severity p)
@@ -211,7 +216,7 @@
                 :precision (if (contains? not-judged problem) "not judged" (precision-cell ls))
                 :confirmed (if (contains? not-judged problem) "" (precision-cell confirmed))})
         per-app (for [[id r] (sort-by key (findings))]
-                  [id (count (:findings r)) (:entities r) (:lines r) (:ms r) (:error r)])]
+                  [id (count (:findings r)) (:entities r) (:lines r) (:ms r) (:error r) (:forms-read r) (:forms r)])]
     (println "## Precision per check\n")
     (println "| check | severity | findings | apps | real | false | useless | unsure | unlabeled | precision (all labels) | precision (confirmed) |")
     (println "|---|---|---|---|---|---|---|---|---|---|---|")
@@ -219,11 +224,12 @@
       (println (str "| `" (name (:problem r)) "` | " (name (:severity r)) " | "
                     (str/join " | " (map r [:n :apps :real :false :useless :unsure :unlabeled :precision :confirmed])) " |")))
     (println "\n## Per app\n")
-    (println "| app | findings | entities read | lines read | per 1k lines | ms |")
-    (println "|---|---|---|---|---|---|")
-    (doseq [[id n entities lines ms err] per-app]
+    (println "| app | findings | entities read | lines read | per 1k lines | library forms read | ms |")
+    (println "|---|---|---|---|---|---|---|")
+    (doseq [[id n entities lines ms err forms-read forms] per-app]
       (println (str "| " (name id) " | " (if err (str "error: " err) n) " | " entities " | " lines " | "
-                    (if (and lines (pos? lines)) (format "%.1f" (/ (* 1000.0 n) lines)) "-") " | " ms " |")))
+                    (if (and lines (pos? lines)) (format "%.1f" (/ (* 1000.0 n) lines)) "-") " | "
+                    (if forms (str forms-read "/" forms) "-") " | " ms " |")))
     (let [keys (set (map :key fs))
           stale (remove #(keys (:finding %)) (judged))]
       (when (seq stale)

@@ -9,7 +9,7 @@ The report gives, per check, how many of its findings were real. Its
 ```sh
 bb corpus fetch        # clone the apps at their commits, under .corpus/apps (gitignored)
 bb corpus run          # check them all, into .corpus/findings.edn (or: bb corpus run athens tubo)
-bb corpus report       # per check: findings, labels, precision; per app: findings per 1k lines
+bb corpus report       # per check: findings, labels, precision; per app: findings per 1k lines, library forms read
 bb corpus unlabeled 20 # findings no label judges yet, with their code and an entry to fill in
 bb corpus plant        # recall: plant known defects, see whether their check finds them
 bb corpus ci           # run + report, exit 1 while a finding has no label
@@ -228,6 +228,17 @@ Pinned to meta-source and meta-source-packs at their current main, the
 corpus gives the same findings as at the old pins except these 6. Their
 labels stay, judging findings no run produces now, as the wrapper labels
 do: the record of what was false and why.
+
+## How far the findings reach
+
+`report` gives, per app, the library forms the packs read out of those they
+found (meta-source#64's coverage line). A form not read is a finding that
+can't be made, so precision is over what was read. At this pin every app
+reads 98% or more: status-mobile 13308 of 13541, vetd-app 1807 of 1828,
+repath-studio 3826 of 3852.
+
+The coverage line's other numbers don't apply here. None of these apps
+links a var to a meta-source id, and none declares rules.
 
 ## A corpus in another project
 
